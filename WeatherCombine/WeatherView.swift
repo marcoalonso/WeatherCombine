@@ -17,30 +17,41 @@ struct WeatherView: View {
                 .edgesIgnoringSafeArea(.all)
 
             VStack {
-                Text(viewModel.locationName)
-                    .font(.largeTitle)
-                    .padding(.top)
+                // Barra de búsqueda por ciudad
+                SearchBar(text: $viewModel.searchQuery) {
+                    viewModel.fetchWeatherByCity(city: viewModel.searchQuery)
+                }
                 
-                Text(viewModel.currentTemperature)
-                    .font(.system(size: 72, weight: .bold))
-                    .padding(.top)
+                if viewModel.isSearching {
+                    ProgressView("Searching...")
+                } else {
+                    VStack {
+                        Text(viewModel.locationName)
+                            .font(.largeTitle)
+                            .padding(.top)
+                        
+                        Text(viewModel.currentTemperature)
+                            .font(.system(size: 72, weight: .bold))
+                            .padding(.top)
+                        
+                        Image(systemName: getWeatherIcon(for: viewModel.weatherDescription))
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 100, height: 100)
+                            .padding(.top)
+                        
+                        Text(viewModel.weatherDescription)
+                            .font(.title)
+                            .padding(.bottom)
+                    }
+                    .foregroundStyle(.white)
+                }
                 
-                Image(systemName: getWeatherIcon(for: viewModel.weatherDescription))
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 100, height: 100)
-                    .padding(.top)
-                
-                Text(viewModel.weatherDescription)
-                    .font(.title)
-                    .padding(.bottom)
-                
-                Divider()
+                Spacer()
             }
-            .foregroundStyle(.white)
-        }
-        .onAppear {
-            viewModel.fetchWeather(for: 19.342, longitude: -101.1234)
+            .onAppear {
+                viewModel.fetchWeatherByLocation(latitude: 19.342, longitude: -101.1234)
+            }
         }
     }
     
@@ -66,3 +77,6 @@ struct WeatherView: View {
     }
 }
 
+#Preview {
+    WeatherView()
+}
