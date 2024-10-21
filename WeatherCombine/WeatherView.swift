@@ -13,8 +13,9 @@ struct WeatherView: View {
     var body: some View {
         ZStack {
             // Fondo degradado
-            LinearGradient(gradient: Gradient(colors: [Color.blue, Color.white]), startPoint: .top, endPoint: .bottom)
-                .edgesIgnoringSafeArea(.all)
+            LinearGradient(gradient: Gradient(colors: viewModel.isDaytime ? [Color.blue, Color.white] : [Color.black, Color.gray]),
+                           startPoint: .top, endPoint: .bottom)
+            .edgesIgnoringSafeArea(.all)
 
             VStack {
                 // Barra de búsqueda por ciudad

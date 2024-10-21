@@ -13,6 +13,7 @@ class WeatherViewModel: ObservableObject {
     @Published var locationName: String = ""
     @Published var searchQuery: String = ""  // Para la búsqueda por ciudad
     @Published var isSearching: Bool = false // Estado de búsqueda
+    @Published var isDaytime: Bool = true
 
     private var cancellables = Set<AnyCancellable>()
     private let weatherService = WeatherService()
@@ -56,5 +57,18 @@ class WeatherViewModel: ObservableObject {
         self.currentTemperature = "\(Int(response.main.temp))°C"
         self.weatherDescription = response.weather.first?.description.capitalized ?? ""
         self.locationName = response.name
+        checkIfDaytime()
+    }
+    
+    private func checkIfDaytime() {
+        let calendar = Calendar.current
+        let currentHour = calendar.component(.hour, from: Date())
+        
+        // Si la hora es después de las 7 PM o antes de las 8 AM, es de noche
+        if currentHour >= 19 || currentHour < 8 {
+            self.isDaytime = false
+        } else {
+            self.isDaytime = true
+        }
     }
 }

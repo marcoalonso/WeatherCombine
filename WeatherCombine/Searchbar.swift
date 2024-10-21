@@ -14,23 +14,31 @@ struct SearchBar: View {
     
     var body: some View {
         HStack {
-            TextField("Search city...", text: $text)
+            TextField("Search city... ", text: $text)
                 .padding(.leading, 10)
                 .frame(height: 40)
-                .background(Color(.systemGray6))
-                .cornerRadius(8)
-            
+                .foregroundStyle(.white)
             Button(action: {
                 onSearch()
             }) {
                 Image(systemName: "magnifyingglass")
-                    .padding(.trailing, 10)
+                    .padding(6)
             }
-            .frame(height: 40)
-            .background(Color.blue)
+            .padding(.leading, -20)
+            .frame(width: 40, height: 40)
+            
             .cornerRadius(8)
             .foregroundColor(.white)
         }
+        
+        .background(Color(.systemGray3))
+        .cornerRadius(20)
         .padding()
+    }
+}
+
+#Preview {
+    SearchBar(text: .constant("Morelia")) {
+        print("")
     }
 }
