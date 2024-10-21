@@ -12,11 +12,19 @@ struct WeatherView: View {
 
     var body: some View {
         ZStack {
+            /*
             // Fondo degradado
             LinearGradient(gradient: Gradient(colors: viewModel.isDaytime ? [Color.blue, Color.white] : [Color.black, Color.gray]),
                            startPoint: .top, endPoint: .bottom)
             .edgesIgnoringSafeArea(.all)
-
+                */
+            if viewModel.isDaytime {
+                GIFImageView(gifName: "clouds_day")
+                    .edgesIgnoringSafeArea(.all)
+            } else {
+                GIFImageView(gifName: "clouds_night")
+                    .edgesIgnoringSafeArea(.all)
+            }
             VStack {
                 // Barra de búsqueda por ciudad
                 SearchBar(text: $viewModel.searchQuery) {

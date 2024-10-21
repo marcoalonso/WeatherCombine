@@ -20,6 +20,7 @@ struct SearchBar: View {
                 .foregroundStyle(.white)
             Button(action: {
                 onSearch()
+                text = ""
             }) {
                 Image(systemName: "magnifyingglass")
                     .padding(6)
