@@ -26,6 +26,7 @@ struct WeatherDetail: Codable {
     let main: String
     let description: String
     let icon: String
+    let id: Int
 }
 
 struct MainWeather: Codable {
@@ -52,3 +53,4 @@ struct Sys: Codable {
     let sunrise: Int
     let sunset: Int
 }
+

@@ -10,6 +10,7 @@ import Combine
 class WeatherViewModel: ObservableObject {
     @Published var currentTemperature: String = "--"
     @Published var weatherDescription: String = ""
+    @Published var weatherId: Int = 800
     @Published var locationName: String = ""
     @Published var searchQuery: String = ""  // Para la búsqueda por ciudad
     @Published var isSearching: Bool = false // Estado de búsqueda
@@ -57,6 +58,7 @@ class WeatherViewModel: ObservableObject {
         self.currentTemperature = "\(Int(response.main.temp))°C"
         self.weatherDescription = response.weather.first?.description.capitalized ?? ""
         self.locationName = response.name
+        self.weatherId = response.weather.first?.id ?? 800
         checkIfDaytime()
     }
     

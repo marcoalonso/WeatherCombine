@@ -40,7 +40,7 @@ struct WeatherView: View {
                             .padding(.top)
                         
                         Text(viewModel.currentTemperature)
-                            .font(.system(size: 72, weight: .bold))
+                            .font(.system(size: 72, weight: .semibold))
                             .padding(.top)
                         
                         Image(systemName: getWeatherIcon(for: viewModel.weatherDescription))
@@ -81,9 +81,36 @@ struct WeatherView: View {
         case "mist":
             return "cloud.fog.fill"
         default:
-            return "cloud.fill"
+            return "cloud"
         }
     }
+    
+    ///Retornar el nombre de la imagen que voy a mostrar al usuario
+    //https://openweathermap.org/weather-conditions
+    func getWeatherImage(for id: Int) -> String {
+    
+        switch id {
+        case 200...250:
+            return "cloud_bolt"
+        case 300...350:
+            return "cloud_drizzle"
+        case 500...531:
+            return "cloud_bolt_rain"
+        case 600...622:
+            return "cloud_snow"
+        case 701...781:
+            return "cloud_fog"
+        case 800:
+            return "sun_max"
+        case 801...804:
+            // return "cloud_sun"
+            return "clouds_day"
+        default:
+            return "cloud"
+        }
+    }
+    
+    
 }
 
 #Preview {
