@@ -43,7 +43,7 @@ struct WeatherView: View {
                             .font(.system(size: 72, weight: .semibold))
                             .padding(.top)
                         
-                        Image(systemName: getWeatherIcon(for: viewModel.weatherDescription))
+                        Image(systemName: viewModel.imageName)
                             .resizable()
                             .scaledToFit()
                             .frame(width: 100, height: 100)
@@ -61,27 +61,6 @@ struct WeatherView: View {
             .onAppear {
                 viewModel.fetchWeatherByLocation(latitude: 19.342, longitude: -101.1234)
             }
-        }
-    }
-    
-    func getWeatherIcon(for description: String) -> String {
-        switch description.lowercased() {
-        case "clear sky":
-            return "sun.max.fill"
-        case "few clouds":
-            return "cloud.sun.fill"
-        case "scattered clouds", "broken clouds", "overcast clouds":
-            return "cloud.fill"
-        case "rain", "light rain", "moderate rain":
-            return "cloud.rain.fill"
-        case "thunderstorm":
-            return "cloud.bolt.fill"
-        case "snow":
-            return "cloud.snow.fill"
-        case "mist":
-            return "cloud.fog.fill"
-        default:
-            return "cloud"
         }
     }
     

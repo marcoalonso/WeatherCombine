@@ -15,6 +15,7 @@ class WeatherViewModel: ObservableObject {
     @Published var searchQuery: String = ""  // Para la búsqueda por ciudad
     @Published var isSearching: Bool = false // Estado de búsqueda
     @Published var isDaytime: Bool = true
+    @Published var imageName: String = ""
 
     private var cancellables = Set<AnyCancellable>()
     private let weatherService = WeatherService()
@@ -71,6 +72,27 @@ class WeatherViewModel: ObservableObject {
             self.isDaytime = false
         } else {
             self.isDaytime = true
+        }
+    }
+    
+    private func getWeatherIcon() {
+        switch weatherDescription.lowercased() {
+        case "clear sky":
+            imageName = "sun.max.fill"
+        case "few clouds":
+            imageName =  "cloud.sun.fill"
+        case "scattered clouds", "broken clouds", "overcast clouds":
+            imageName =  "cloud.fill"
+        case "rain", "light rain", "moderate rain":
+            imageName =  "cloud.rain.fill"
+        case "thunderstorm":
+            imageName =  "cloud.bolt.fill"
+        case "snow":
+            imageName =  "cloud.snow.fill"
+        case "mist":
+            imageName =  "cloud.fog.fill"
+        default:
+            imageName =  "cloud"
         }
     }
 }
