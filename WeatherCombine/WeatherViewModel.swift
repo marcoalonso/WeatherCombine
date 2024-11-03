@@ -18,7 +18,25 @@ class WeatherViewModel: ObservableObject {
     @Published var imageName: String = ""
 
     private var cancellables = Set<AnyCancellable>()
-    private let weatherService = WeatherService()
+    private let weatherService: WeatherService
+    private let locationManager: LocationManager
+    
+    // Inicializador que permite la inyección de dependencias
+    init(weatherService: WeatherService = WeatherService(),
+         locationManager: LocationManager = LocationManager()) {
+        self.weatherService = weatherService
+        self.locationManager = locationManager
+        setupLocationSubscription()
+    }
+    
+    private func setupLocationSubscription() {
+        locationManager.$currentLocation
+            .compactMap { $0 }
+            .sink { [weak self] location in
+                self?.fetchWeatherByLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+            }
+            .store(in: &cancellables)
+    }
     
     // Método para buscar el clima por ciudad
     func fetchWeatherByCity(city: String) {
@@ -61,6 +79,7 @@ class WeatherViewModel: ObservableObject {
         self.locationName = response.name
         self.weatherId = response.weather.first?.id ?? 800
         checkIfDaytime()
+        getWeatherIcon()
     }
     
     private func checkIfDaytime() {
@@ -76,23 +95,30 @@ class WeatherViewModel: ObservableObject {
     }
     
     private func getWeatherIcon() {
-        switch weatherDescription.lowercased() {
-        case "clear sky":
-            imageName = "sun.max.fill"
-        case "few clouds":
-            imageName =  "cloud.sun.fill"
-        case "scattered clouds", "broken clouds", "overcast clouds":
-            imageName =  "cloud.fill"
-        case "rain", "light rain", "moderate rain":
-            imageName =  "cloud.rain.fill"
-        case "thunderstorm":
-            imageName =  "cloud.bolt.fill"
-        case "snow":
-            imageName =  "cloud.snow.fill"
-        case "mist":
-            imageName =  "cloud.fog.fill"
+        switch weatherId {
+        case 200...232:
+            imageName = "cloud.bolt.fill"
+        case 300...350:
+            imageName = "cloud.rain.fill"
+        case 500...532:
+            imageName = "cloud.sun.rain"
+        case 600...650:
+            imageName = "cloud.snow"
+        case 700...750:
+            imageName = "tornado"
+        case 800:
+            imageName = "sun.max"
+        case 801:
+            imageName = "cloud.sun"
+        case 802:
+            imageName = "cloud.sun"
+        case 803:
+            imageName = "icloud.fill"
+        case 804:
+            imageName = "icloud.fill"
         default:
-            imageName =  "cloud"
+            imageName = "cloud"
         }
     }
 }
+
